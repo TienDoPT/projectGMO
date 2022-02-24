@@ -1,9 +1,15 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { Image, LogBox, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const Detail = ({ navigation }) => {
+LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+]);
+
+const Detail = ({ navigation, route }) => {
+
+    const { avatar, first_name, last_name, email } = route.params.item
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -23,19 +29,19 @@ const Detail = ({ navigation }) => {
         <View style={styles.container}>
             <Image
                 source={{
-                    uri: 'https://reqres.in/img/faces/10-image.jpg',
+                    uri: avatar,
                 }}
                 style={styles.avatar}
 
             />
             <View style={styles.nameEdit}>
-                <Text style={styles.name}>Johanna Doe </Text>
+                <Text style={styles.name}>{first_name} {last_name} </Text>
                 <FontAwesome5
                     name='pen'
                     color={'black'}
                 />
             </View>
-            <Text style={styles.email}>Johanna@company.com</Text>
+            <Text style={styles.email}>{email}</Text>
         </View>
 
     )
@@ -53,7 +59,6 @@ const styles = StyleSheet.create({
     email: {
         color: '#b3b3ba',
         lineHeight: 20,
-        margin: 10
     },
     avatar: {
         width: 100,

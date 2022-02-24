@@ -1,15 +1,23 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
+
 import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import layout from '../utilities/layout';
+import { useDispatch } from 'react-redux'
+import { logOut } from '../reduxSaga/authSlice'
+import globalStyles from '../utilities/globalStyles'
+
+
 const DrawerContent = (props) => {
 
     const navigation = useNavigation()
+    const dispatch = useDispatch()
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, position: 'relative', height: layout.height }}>
             <DrawerContentScrollView {...props}>
                 <Ionicons
                     name='close-outline'
@@ -31,12 +39,27 @@ const DrawerContent = (props) => {
                     </TouchableOpacity>
 
                     <Text style={styles.name}>Johanna Doe</Text>
-                    <Text style={styles.email}>Johanna@company.com</Text>
+                    <Text style={styles.email}>eve.holt@reqres.in</Text>
                 </View>
                 <View style={{ flex: 1, }}>
                     <DrawerItemList {...props} />
                 </View>
             </DrawerContentScrollView>
+            <TouchableOpacity
+                style={styles.signOut}
+                onPress={() => dispatch(logOut())}
+            >
+                <SimpleLineIcons
+                    name='logout'
+                    color={'#f85f6a'}
+                    size={20}
+                    style={{ margin: 8 }}
+                />
+                <Text style={globalStyles.redText}>
+                    Sign out
+                </Text>
+            </TouchableOpacity>
+
         </View>
 
     )
@@ -65,5 +88,12 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         marginBottom: 30
-    }
+    },
+    signOut: {
+        position: 'absolute',
+        bottom: 0,
+        margin: 15,
+        flexDirection: 'row',
+        alignItems:'center'
+    },
 })

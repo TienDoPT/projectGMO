@@ -1,9 +1,10 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { onChange } from 'react-native-reanimated'
 
 
-const CustomInput = ({ hide, label, placeholder, onPress }) => {
+const CustomInput = ({ hide, label, placeholder, onPress, value, onChangeText }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.label}>
@@ -16,6 +17,8 @@ const CustomInput = ({ hide, label, placeholder, onPress }) => {
                     style={styles.input}
                     secureTextEntry={hide}
                     placeholder={placeholder}
+                    value={value}
+                    onChangeText={onChangeText}
                 />
                 {hide !== undefined ?
                     <Ionicons
