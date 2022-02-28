@@ -1,14 +1,14 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectUser, login, loading } from '../reduxSaga/authSlice'
 import layout from '../utilities/layout'
 
 const Loading = () => {
 
-    const loading = useSelector(selectUser)
+    const loadingLogin = useSelector((state) => state.login.isLoading)
+    const loadingUser = useSelector((state) => state.users.isLoading)
 
-    return loading.isLoading ? (
+    return loadingLogin || loadingUser ? (
         <View style={styles.container} >
             <ActivityIndicator size="large" color="#f85f6a" />
         </View>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
         elevation: 2,
         height: layout.height,
-        width:layout.width,
+        width: layout.width,
         position: "absolute",
         alignItems: "center",
         justifyContent: "center",

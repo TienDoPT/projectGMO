@@ -8,7 +8,7 @@ import window from '../utilities/layout'
 import { validate } from '../utilities/function'
 import { useDispatch } from 'react-redux'
 import { register, loading } from '../reduxSaga/authSlice'
-import { userSignUp } from '../service'
+import { userSignUp } from '../reduxSaga/actions/loginAction'
 
 const SignUp = ({ navigation }) => {
 
@@ -19,11 +19,31 @@ const SignUp = ({ navigation }) => {
   const [password, setPassWord] = useState('pistol')
   const [email, setEmail] = useState('eve.holt@reqres.in')
 
-  const submitHandler = async () => {
-    if (toggleCheckBox === false) {
-      Alert.alert('Error', 'Please agree to Term of Services and Privacy Policy')
-      return
-    }
+  // const submitHandler = async () => {
+  //   if (!validate(email)) {
+  //     Alert.alert("Error", "Email is unrecognizable")
+  //     return
+  //   }
+  //   if (email == '' || password == '') {
+  //     Alert.alert("Error", "Missing email or password")
+  //     return
+  //   }
+  //   if (toggleCheckBox === false) {
+  //     Alert.alert('Error', 'Please agree to Term of Services and Privacy Policy')
+  //     return
+  //   }
+  //   dispatch(loading(true))
+  //   try {
+  //     const response = await userSignUp({ email, password })
+  //     console.log(response?.data?.token);
+  //     dispatch(register(response?.data?.token))
+  //   } catch (error) {
+  //     dispatch(loading(false))
+  //     console.log('error ', error);
+  //   }
+  // }
+
+  const submitHandler = () => {
     if (!validate(email)) {
       Alert.alert("Error", "Email is unrecognizable")
       return
@@ -32,15 +52,11 @@ const SignUp = ({ navigation }) => {
       Alert.alert("Error", "Missing email or password")
       return
     }
-    dispatch(loading(true))
-    try {
-      const response = await userSignUp({ email, password })
-      console.log(response?.data?.token);
-      dispatch(register(response?.data?.token))
-    } catch (error) {
-      dispatch(loading(false))
-      console.log('error ', error);
+    if (toggleCheckBox === false) {
+      Alert.alert('Error', 'Please agree to Term of Services and Privacy Policy')
+      return
     }
+    dispatch(userSignUp({ email, password }))
   }
 
   return (
