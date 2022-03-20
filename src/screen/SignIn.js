@@ -4,20 +4,51 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import CustomInput from '../components/CustomInput'
 import CustomButton from '../components/CustomButton'
 import globalStyles from '../utilities/globalStyles'
-import {  userLogin } from '../service'
-import { useSelector, useDispatch } from 'react-redux'
+// import { userLogin } from '../service'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectUser, login, loading } from '../reduxSaga/authSlice'
 import { validate } from '../utilities/function'
+import { userLogin } from '../reduxSaga/actions/loginAction'
 
 const SignIn = ({ navigation }) => {
 
+  const loginError = useSelector(state => state.login)
   const dispatch = useDispatch()
 
   const [hide, setHide] = useState(true)
   const [password, setPassWord] = useState('cityslicka')
   const [email, setEmail] = useState('eve.holt@reqres.in')
 
-  const submitHandler = async () => {
+  // const submitHandler = async () => {
+  //   if (!validate(email)) {
+  //     Alert.alert("Error", "Email is unrecognizable")
+  //     return
+  //   }
+  //   if (email == '' || password == '') {
+  //     Alert.alert("Error", "Missing email or password")
+  //     return
+  //   }
+  //   dispatch(loading(true))
+  //   try {
+  //     const response = await userLogin({ email, password })
+  //     console.log(response?.data?.token);
+  //     dispatch(login(response?.data?.token))
+  //   } catch (error) {
+  //     dispatch(loading(false))
+  //     Alert.alert("Error", "Incorrect email or password")
+  //   }
+  // }
+
+  useEffect(() => {
+    if (loginError.error == true && loginError.isLoading == false) {
+      Alert.alert("Error", "Incorrect email or password")
+      dispatch(setError(false))
+      return
+    }
+  }, [loginError.error])
+
+
+  const submitHandler = () => {
     if (!validate(email)) {
       Alert.alert("Error", "Email is unrecognizable")
       return
@@ -26,15 +57,10 @@ const SignIn = ({ navigation }) => {
       Alert.alert("Error", "Missing email or password")
       return
     }
-    dispatch(loading(true))
-    try {
-      const response = await userLogin({ email, password })
-      console.log(response?.data?.token);
-      dispatch(login(response?.data?.token))
-    } catch (error) {
-      dispatch(loading(false))
+    if (loginError.error == true) {
       Alert.alert("Error", "Incorrect email or password")
     }
+    dispatch(userLogin({ email, password }))
   }
 
   return (

@@ -7,8 +7,8 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import layout from '../utilities/layout';
 import { useDispatch } from 'react-redux'
-import { logOut } from '../reduxSaga/authSlice'
 import globalStyles from '../utilities/globalStyles'
+import { userLogOut } from '../reduxSaga/actions/loginAction'
 
 
 const DrawerContent = (props) => {
@@ -47,7 +47,7 @@ const DrawerContent = (props) => {
             </DrawerContentScrollView>
             <TouchableOpacity
                 style={styles.signOut}
-                onPress={() => dispatch(logOut())}
+                onPress={() => dispatch(userLogOut())}
             >
                 <SimpleLineIcons
                     name='logout'

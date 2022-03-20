@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import Navigation, { LogIn, HomeStack } from './src/navigation';
+import Navigation from './src/navigation';
 import store from './src/reduxSaga/store'
 import { Provider } from 'react-redux'
 import Loading from './src/components/Loading';

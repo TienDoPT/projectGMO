@@ -96,11 +96,11 @@ import LoginStack from './LoginStack';
 // }
 
 const Navigation = () => {
-    const user = useSelector(selectUser)
+    const user = useSelector((state) => state.login.userToken)
 
     return (
         <NavigationContainer theme={DefaultTheme}>
-            {user.userToken !== null ? <HomeStack /> : <LoginStack />}
+            {user !== null ? <HomeStack /> : <LoginStack />}
         </NavigationContainer>
     )
 

@@ -4,14 +4,14 @@ const instance = axios.create({
     baseURL: 'https://reqres.in/api',
 });
 
-export const getUser = () => {
+export const requestUser = () => {
     return instance.get('/users');
 }
 
-export const userLogin = (user) => {
+export const requestLogin = (user) => {
     return instance.post('/login', user)
 }
 
-export const userSignUp = (user) => {
+export const requestSignUp = (user) => {
     return instance.post('/register', user)
 }

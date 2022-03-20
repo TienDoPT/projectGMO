@@ -1,12 +1,11 @@
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import axios from 'axios'
-import UserCard from '../components/UsersCard'
 
 import { LogBox } from 'react-native';
 import { getUser } from '../service'
 import UsersCard from '../components/UsersCard'
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUsers } from '../reduxSaga/actions/usersAction';
 
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
@@ -16,31 +15,36 @@ const Home = ({ navigation }) => {
 
   const [listUsers, setListUsers] = useState([])
 
-  const fetchData = async () => {
-    try {
-      const response = await getUser()
-      setListUsers(response?.data?.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const usersData = useSelector((state) => state.users.data)
+  const dispatch = useDispatch()
+
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await getUser()
+  //     setListUsers(response?.data?.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
   useEffect(() => {
-    fetchData()
+    dispatch(loadUsers())
+    console.log(usersData);
   }, [])
 
   return (
     <View style={styles.container}>
-      <FlatList
-        keyExtractor={(_, index) => index}
-        data={listUsers}
-        renderItem={(item) => (
-          <UsersCard
-            user={item}
-            onPress={() => navigation.navigate('Detail', item)}
-          />
-        )}
-      />
+      {usersData?.length !== 0 ?
+        <FlatList
+          keyExtractor={(_, index) => index}
+          data={usersData}
+          renderItem={(item) => (
+            <UsersCard
+              user={item}
+              onPress={() => navigation.navigate('Detail', item)}
+            />
+          )}
+        /> : null}
     </View>
   )
 }
